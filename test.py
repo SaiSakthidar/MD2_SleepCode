@@ -131,7 +131,7 @@ def detect_unused_indexes(collection_name):
 
 def get_slow_queries():
     db.command("profile", 2, slowms=100)  # Log queries taking longer than 100 milliseconds
-    slow_queries = db.system.profile.find({'millis': {'$gt': 0.6}})  # Filter for queries taking longer than 100 milliseconds
+    slow_queries = db.system.profile.find({'millis': {'$gt':0.85}})  # Filter for queries taking longer than 100 milliseconds
     slow_queries_list = list(slow_queries)
     return slow_queries_list
 
@@ -175,6 +175,21 @@ def suggest_indexes_from_queries(slow_queries):
                 suggested_indexes.append({"fields": list(set(fields))})
     return suggested_indexes
 
+def estimate_index_storage(index_fields):
+    # Generate a sample query that would use the new index
+    sample_query = {field: {"$exists": True} for field in index_fields}
+    
+    # Use the explain command to get the query plan
+    explain_plan = collection.find(sample_query).explain()
+    
+    # Extract the estimated index size from the query plan
+    index_size = explain_plan.get('executionStats', {}).get('totalKeysExamined', 0)
+    
+    # Convert the index size to KB
+    index_size_kb = index_size / 1024
+    
+    return index_size_kb
+
 def estimate_tradeoffs(index_suggestions, unused_indexes, usage_to_storage_ratio, index_sizes):
     tradeoffs = []
 
@@ -193,11 +208,11 @@ def estimate_tradeoffs(index_suggestions, unused_indexes, usage_to_storage_ratio
     for suggestion in index_suggestions:
         fields = suggestion["fields"]
         
-        # Placeholder logic for storage cost estimation
-        storage_cost = len(fields) * 1000 / 1024  # Example: 100 bytes per field, convert to KB
+        # Estimate storage cost using the estimate_index_storage function
+        storage_cost = estimate_index_storage(fields)
         
-        # Placeholder logic for performance gain estimation
-        performance_gain = len(fields) * 10  # Example: 10% improvement per field
+        # Estimate performance gain based on the number of fields and their types
+        performance_gain = len(fields) * 5  # Example: 5% improvement per field
         
         tradeoffs.append({
             "index": ", ".join(fields),

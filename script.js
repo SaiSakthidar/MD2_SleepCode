@@ -41,12 +41,8 @@ function displaySuggestedIndexes(suggestedIndexes, tradeoffs) {
         fieldsCell.textContent = index.fields.join(', ');
         row.appendChild(fieldsCell);
 
-        // Add performance indicator and storage required
+        // Add storage required
         const tradeoff = tradeoffs.find(t => t.index === index.fields.join(', '));
-        const performanceCell = document.createElement('td');
-        performanceCell.textContent = tradeoff ? tradeoff.performance_measure : 'N/A';
-        row.appendChild(performanceCell);
-
         const storageCell = document.createElement('td');
         storageCell.textContent = tradeoff ? tradeoff.storage_extra_required : 'N/A';
         row.appendChild(storageCell);
@@ -55,6 +51,7 @@ function displaySuggestedIndexes(suggestedIndexes, tradeoffs) {
         const addButtonCell = document.createElement('td');
         const addButton = document.createElement('button');
         addButton.textContent = 'Add Index';
+        addButton.classList.add('add-index');
         addButton.onclick = () => addIndex(index.fields);
         addButtonCell.appendChild(addButton);
         row.appendChild(addButtonCell);
@@ -77,17 +74,18 @@ function displayUnusedIndexes(unusedIndexes, tradeoffs) {
         // Add performance indicator and storage saved
         const tradeoff = tradeoffs.find(t => t.index === index);
         const performanceCell = document.createElement('td');
-        performanceCell.textContent = tradeoff ? tradeoff.performance_measure : 'N/A';
+        performanceCell.textContent = tradeoff ? `-${tradeoff.performance_measure}` : 'N/A';
         row.appendChild(performanceCell);
 
         const storageCell = document.createElement('td');
-        storageCell.textContent = tradeoff ? tradeoff.storage_saved : 'N/A';
+        storageCell.textContent = tradeoff ? `${tradeoff.storage_saved}` : 'N/A';  // Add negative sign
         row.appendChild(storageCell);
 
         // Add button to remove index
         const removeButtonCell = document.createElement('td');
         const removeButton = document.createElement('button');
         removeButton.textContent = 'Remove Index';
+        removeButton.classList.add('remove-index');
         removeButton.onclick = () => removeIndex(index);
         removeButtonCell.appendChild(removeButton);
         row.appendChild(removeButtonCell);

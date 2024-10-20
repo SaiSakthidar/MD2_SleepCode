@@ -75,7 +75,6 @@ tbody tr:nth-child(even) {
 /* New styles for the action buttons */
 button {
     padding: 8px 16px;
-    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 4px;
@@ -83,6 +82,18 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+button.add-index {
+    background-color: #4CAF50;
+}
+
+button.add-index:hover {
     background-color: #45a049;
+}
+
+button.remove-index {
+    background-color: #f44336;
+}
+
+button.remove-index:hover {
+    background-color: #e53935;
 }
