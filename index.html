@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Index Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
+</head>
+<body>
+    <div class="container">
+        <h1>MongoDB Index Analysis</h1>
+        
+        <div class="slow-queries">
+            <h2>Slow Queries</h2>
+            <p id="slowQueriesCount"></p>
+        </div>
+
+        <div class="tables">
+            <div class="table-container">
+                <h2>Suggested Indexes</h2>
+                <table id="suggestedIndexesTable">
+                    <thead>
+                        <tr>
+                            <th>Fields</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <h2>Unused Indexes</h2>
+                <table id="unusedIndexesTable">
+                    <thead>
+                        <tr>
+                            <th>Unused Index</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h2>Used Indexes Access Count</h2>
+            <canvas id="usedIndexesChart"></canvas> <!-- Canvas for Chart -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
