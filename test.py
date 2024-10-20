@@ -154,8 +154,6 @@ def estimate_tradeoffs(index_suggestions, unused_indexes):
     # Estimate trade-offs for adding suggested indexes
     for suggestion in index_suggestions:
         fields = suggestion["fields"]
-        
-        # Placeholder logic for storage cost estimation
         storage_cost = len(fields) * 100  # Example: 100 bytes per field
         
         # Placeholder logic for performance gain estimation
